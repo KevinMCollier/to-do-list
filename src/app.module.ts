@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from './models/user.model';
-import { DailyTodoSchema } from './models/daily-todo.model';
-import { WeeklyTodoSchema } from './models/weekly-todo.model';
-import { SpotTodoSchema } from './models/spot-todo.model';
+import { UserSchema } from './user/models/user.model';
+import { DailyTodoSchema } from './todo/models/daily-todo.model';
+import { WeeklyTodoSchema } from './todo/models/weekly-todo.model';
+import { SpotTodoSchema } from './todo/models/spot-todo.model';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
