@@ -17,8 +17,8 @@ export class CreateTodoDto {
   date: Date;
 
   @IsNotEmpty()
-  @IsEnum(['Never', 'Daily', 'Weekly'])
-  repeat: 'Never' | 'Daily' | 'Weekly';
+  @IsEnum(['Never', 'Daily - Weekdays', 'Daily - Weekends', 'Daily', 'Weekly'])
+  repeat: 'Never' | 'Daily - Weekdays' | 'Daily - Weekends' | 'Daily' | 'Weekly';
 
   @IsOptional()
   @IsEnum(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])

@@ -22,7 +22,11 @@ export class TodoService {
     const filteredTodos = todos.filter(todo => {
       if (todo.repeat === 'Never' && isSameDay(todo.date, date)) {
         return true;
-      } else if (todo.repeat === 'Daily' && (!todo.excludeWeekends || !isWeekend(date))) {
+      } else if (todo.repeat === 'Daily - Weekdays' && !isWeekend(date)) {
+        return true;
+      } else if (todo.repeat === 'Daily - Weekends' && isWeekend(date)) {
+        return true;
+      } else if (todo.repeat === 'Daily') {
         return true;
       } else if (todo.repeat === 'Weekly' && todo.dayOfWeek === format(date, 'EEEE')) {
         return true;
