@@ -5,8 +5,8 @@ export const TodoSchema = new mongoose.Schema({
   description: { type: String, required: false },
   date: { type: Date, required: true },
   repeat: { type: String, required: true, enum: ['Never', 'Daily', 'Weekly'] },
-  dayOfWeek: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] },
-  excludeWeekends: { type: Boolean, default: false },
+  dayOfWeek: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], required: false },
+  excludeWeekends: { type: Boolean, default: false, required: false },
 });
 
 export interface Todo extends mongoose.Document {
