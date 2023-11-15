@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
 import { TodoService } from '../services/todo.services';
 import { CreateTodoDto } from '../dto/create-todo.dto';
+import { parseISO } from 'date-fns';
 
 @Controller('todos')
 export class TodoController {
@@ -12,8 +13,9 @@ export class TodoController {
   }
 
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  findAll(@Query('date') dateString: string) {
+    const date = parseISO(dateString);
+    return this.todoService.findAll(date);
   }
 
   @Get(':id')

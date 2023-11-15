@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from '../dto/create-todo.dto';
 import { Todo } from '../models/todo.model';
-import { format } from 'date-fns';
+import { format, isSameDay, isWeekend } from 'date-fns';
 
 @Injectable()
 export class TodoService {
@@ -17,8 +17,20 @@ export class TodoService {
     return todo.save();
   }
 
-  async findAll(): Promise<Todo[]> {
-    return this.todoModel.find().exec();
+  async findAll(date: Date): Promise<Todo[]> {
+    const todos = await this.todoModel.find().exec();
+    const filteredTodos = todos.filter(todo => {
+      if (todo.repeat === 'Never' && isSameDay(todo.date, date)) {
+        return true;
+      } else if (todo.repeat === 'Daily' && (!todo.excludeWeekends || !isWeekend(date))) {
+        return true;
+      } else if (todo.repeat === 'Weekly' && todo.dayOfWeek === format(date, 'EEEE')) {
+        return true;
+      }
+      return false;
+    });
+
+    return filteredTodos;
   }
 
   async findOne(id: string): Promise<Todo> {
