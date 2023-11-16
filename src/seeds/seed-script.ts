@@ -4,14 +4,17 @@ import { TodoService } from '../todo/services/todo.services';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import { Todo } from '../todo/modules/todo.module';
+import { Todo } from '../todo/modules/todo.module';  // Adjust the path to your Todo schema
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { CreateTodoDto } from '../todo/dto/create-todo.dto'; // Adjust the path to your CreateTodoDto
 import * as readline from 'readline';
+import { UserService } from '../user/services/user.services'; // Adjust the path to your UserService
 
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const todoModel = app.get<Model<Todo>>(getModelToken(Todo.name));
   const todoService = app.get<TodoService>(TodoService);
+  const userService = app.get<UserService>(UserService);
 
   if (process.env.NODE_ENV === 'development') {
     const rl = readline.createInterface({
@@ -24,16 +27,14 @@ async function seed() {
         await todoModel.deleteMany({});
 
         // Seed user
-        // Assuming you have a UserService to handle user creation
-        // const userService = app.get<UserService>(UserService);
-        // const kevin: CreateUserDto = { name: 'Kevin', productivityLevel: 'Motivated' };
-        // const kevinUser = await userService.create(kevin);
+        const kevin: CreateUserDto = { name: 'Kevin', email: 'kevin@example.com', productivityLevel: 'Motivated' };
+        const kevinUser = await userService.create(kevin);
 
         // Seed todos
         const seedTodos: CreateTodoDto[] = [
-          { title: 'Decorate Christmas Tree', repeat: 'Never', /* other properties, user: kevinUser */ },
-          { title: 'Clean kitchen', repeat: 'Daily - Weekends', /* other properties, user: kevinUser */ },
-          // ... other todos
+          { title: 'Decorate Christmas Tree', repeat: 'Never', date: new Date('2023-12-24'), user: kevinUser.id },
+          { title: 'Clean kitchen', repeat: 'Daily - Weekends', date: new Date('2023-12-01'), user: kevinUser.id },
+          // ... other todos with dates and user reference
         ];
 
         for (const todoData of seedTodos) {
