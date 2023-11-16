@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from './user/models/user.model';
-import { TodoSchema } from './todo/models/todo.model';
+import { UserSchema } from './user/modules/user.module';
+import { TodoSchema } from './todo/modules/todo.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 

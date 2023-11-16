@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from '../dto/create-todo.dto';
-import { Todo } from '../models/todo.model';
+import { Todo } from '../modules/todo.module';
 import { format, isSameDay, isWeekend } from 'date-fns';
 
 @Injectable()
