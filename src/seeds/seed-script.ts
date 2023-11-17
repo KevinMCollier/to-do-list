@@ -1,18 +1,21 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { TodoService } from '../todo/services/todo.services';
-import { InjectModel } from '@nestjs/mongoose';
+// import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import { Todo } from '../todo/modules/todo.module';  // Adjust the path to your Todo schema
+import { Todo } from '../todo/models/todo.model';  // Adjust the path to your Todo schema
+import { TodoModel } from '../todo/models/todo.model';  // Adjust the path to your Todo schema
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { CreateTodoDto } from '../todo/dto/create-todo.dto'; // Adjust the path to your CreateTodoDto
 import * as readline from 'readline';
-import { UserService } from '../user/services/user.services'; // Adjust the path to your UserService
+import { UserService } from '../user/services/user.service'; // Adjust the path to your UserService
 
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
-  const todoModel = app.get<Model<Todo>>(getModelToken(Todo.name));
+  const todoModel = app.get<Model<Todo>>(getModelToken(TodoModel.name));
   const todoService = app.get<TodoService>(TodoService);
   const userService = app.get<UserService>(UserService);
 

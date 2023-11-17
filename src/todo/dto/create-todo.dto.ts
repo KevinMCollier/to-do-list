@@ -1,6 +1,6 @@
 // src/todo/dto/create-todo.dto.ts
 
-import { IsNotEmpty, IsString, IsBoolean, IsDate, IsOptional, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, IsBoolean, IsDate, IsOptional, IsEnum, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTodoDto {
@@ -27,4 +27,8 @@ export class CreateTodoDto {
   @IsOptional()
   @IsBoolean()
   excludeWeekends?: boolean;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  user: string;
 }
