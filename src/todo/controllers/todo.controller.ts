@@ -13,9 +13,14 @@ export class TodoController {
   }
 
   @Get()
-  findAll(@Query('date') dateString: string) {
+  findAll() {
+    return this.todoService.findAll();
+  }
+
+  @Get('byDate')
+  findTodosByDate(@Query('date') dateString: string) {
     const date = parseISO(dateString);
-    return this.todoService.findAll(date);
+    return this.todoService.findTodosByDate(date);
   }
 
   @Get(':id')
@@ -31,5 +36,10 @@ export class TodoController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.todoService.remove(id);
+  }
+
+  @Get('user/:userName')
+  findAllByUser(@Param('userName') userName: string) {
+    return this.todoService.findAllByUser(userName);
   }
 }

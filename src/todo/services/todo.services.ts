@@ -17,7 +17,7 @@ export class TodoService {
     return todo.save();
   }
 
-  async findAll(date: Date): Promise<Todo[]> {
+  async findTodosByDate(date: Date): Promise<Todo[]> {
     const todos = await this.todoModel.find().exec();
     const filteredTodos = todos.filter(todo => {
       if (todo.repeat === 'Never' && isSameDay(todo.date, date)) {
@@ -35,6 +35,10 @@ export class TodoService {
     });
 
     return filteredTodos;
+  }
+
+  async findAll(): Promise<Todo[]> {
+    return this.todoModel.find().exec();
   }
 
   async findOne(id: string): Promise<Todo> {
@@ -63,5 +67,9 @@ export class TodoService {
       // This could be throwing an exception or handling it another way depending on your application's requirements
       throw new BadRequestException('Invalid day of the week.');
     }
+  }
+
+  async findAllByUser(userName: string): Promise<Todo[]> {
+    return this.todoModel.find({ 'user.name': userName }).exec();
   }
 }

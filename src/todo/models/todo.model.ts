@@ -3,11 +3,10 @@ import { User } from '../../user/models/user.model'
 
 export const TodoSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String, required: false },
+  // description: { type: String, required: false },
   date: { type: Date, required: true },
   repeat: { type: String, required: true, enum: ['Never', 'Daily - Weekdays', 'Daily - Weekends', 'Daily', 'Weekly'] },
   dayOfWeek: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], required: false },
-  excludeWeekends: { type: Boolean, default: false, required: false },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -17,11 +16,10 @@ export const TodoSchema = new mongoose.Schema({
 
 export interface Todo extends mongoose.Document {
   title: string;
-  description?: string;
+  // description?: string;
   date: Date;
   repeat: 'Never' | 'Daily - Weekdays' | 'Daily - Weekends' | 'Daily' | 'Weekly';
   dayOfWeek?: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
-  excludeWeekends?: boolean;
   user: mongoose.Schema.Types.ObjectId | User;
 }
 
