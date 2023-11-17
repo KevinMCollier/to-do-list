@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
-import { TodoService } from '../todo/services/todo.services';
+import { TodoService } from '../todo/services/todo.service';
 // import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
