@@ -64,4 +64,8 @@ export class TodoService {
       throw new BadRequestException('Invalid day of the week.');
     }
   }
+
+  async findAllByUser(userName: string): Promise<Todo[]> {
+    return this.todoModel.find({ 'user.name': userName }).exec();
+  }
 }

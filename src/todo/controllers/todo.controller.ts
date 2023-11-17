@@ -32,4 +32,9 @@ export class TodoController {
   remove(@Param('id') id: string) {
     return this.todoService.remove(id);
   }
+
+  @Get('user/:userName')
+  findAllByUser(@Param('userName') userName: string) {
+    return this.todoService.findAllByUser(userName);
+  }
 }
