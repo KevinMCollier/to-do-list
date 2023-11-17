@@ -13,9 +13,14 @@ export class TodoController {
   }
 
   @Get()
-  findAll(@Query('date') dateString: string) {
+  findAll() {
+    return this.todoService.findAll();
+  }
+
+  @Get()
+  findTodosByDate(@Query('date') dateString: string) {
     const date = parseISO(dateString);
-    return this.todoService.findAll(date);
+    return this.todoService.findTodosByDate(date);
   }
 
   @Get(':id')
