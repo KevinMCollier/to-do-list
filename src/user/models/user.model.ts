@@ -18,3 +18,5 @@ export interface User extends mongoose.Document {
   createdAt: Date;
   productivityLevel: 'Lazy' | 'Normal' | 'Motivated';
 }
+
+export const UserModel = mongoose.model<User>('User', UserSchema);
