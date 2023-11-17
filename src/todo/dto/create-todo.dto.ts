@@ -8,8 +8,8 @@ export class CreateTodoDto {
   @IsString()
   title: string;
 
-  @IsString()
-  description?: string;
+  // @IsString()
+  // description?: string;
 
   @IsNotEmpty()
   @Type(() => Date)
@@ -23,10 +23,6 @@ export class CreateTodoDto {
   @IsOptional()
   @IsEnum(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
   dayOfWeek?: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
-
-  @IsOptional()
-  @IsBoolean()
-  excludeWeekends?: boolean;
 
   @IsNotEmpty()
   @IsMongoId()

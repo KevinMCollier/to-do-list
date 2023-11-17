@@ -17,7 +17,7 @@ export class TodoController {
     return this.todoService.findAll();
   }
 
-  @Get()
+  @Get('byDate')
   findTodosByDate(@Query('date') dateString: string) {
     const date = parseISO(dateString);
     return this.todoService.findTodosByDate(date);
