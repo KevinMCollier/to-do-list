@@ -13,8 +13,9 @@ export class TodoService {
     if (createTodoDto.repeat === 'Weekly') {
       this.assignDayOfWeek(createTodoDto);
     }
-    const todo = new this.todoModel(createTodoDto);
-    return todo.save();
+    // const todo = new this.todoModel(createTodoDto);
+    // return todo.save();
+    return this.todoModel.create(createTodoDto);
   }
 
   async findTodosByDate(date: Date): Promise<Todo[]> {
