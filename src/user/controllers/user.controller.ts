@@ -31,4 +31,8 @@ export class UserController {
     return this.userService.remove(id);
   }
 
+  @Get('username/:username')
+  findByUsername(@Param('username') username: string) {
+    return this.userService.findByUsername(username);
+  }
 }
