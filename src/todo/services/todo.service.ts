@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from '../dto/create-todo.dto';
@@ -18,8 +18,8 @@ export class TodoService {
     return this.todoModel.create(createTodoDto);
   }
 
-  async findTodosByDate(date: Date): Promise<Todo[]> {
-    const todos = await this.todoModel.find().exec();
+  async findTodosByDate(date: Date, userName: string): Promise<Todo[]> {
+    const todos = await this.todoModel.find({ 'user.name': userName }).exec();
     const filteredTodos = todos.filter(todo => {
       if (todo.repeat === 'Never' && isSameDay(todo.date, date)) {
         return true;
@@ -42,19 +42,30 @@ export class TodoService {
     return this.todoModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Todo> {
-    return this.todoModel.findById(id).exec();
+  async findOne(id: string, userName: string): Promise<Todo> {
+    const todo = await this.todoModel.findOne({ _id: id, 'user.name': userName }).exec();
+    if (!todo) {
+      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`)
+    }
+    return todo;
   }
 
-  async update(id: string, updateTodoDto: CreateTodoDto): Promise<Todo> {
+  async update(id: string, updateTodoDto: CreateTodoDto, userName: string): Promise<Todo> {
     if (updateTodoDto.repeat === 'Weekly') {
       this.assignDayOfWeek(updateTodoDto);
     }
-    return this.todoModel.findByIdAndUpdate(id, updateTodoDto, { new: true }).exec();
+    const updatedTodo = await this.todoModel.findOneAndUpdate({ _id: id, 'user.name': userName }, updateTodoDto, { new: true }).exec();
+    if (!updatedTodo) {
+      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`)
+    }
+    return updatedTodo;
   }
 
-  async remove(id: string): Promise<void> {
-    await this.todoModel.findByIdAndRemove(id).exec();
+  async remove(id: string, userName: string): Promise<void> {
+    const result = await this.todoModel.deleteOne({ _id: id, 'user.name': userName }).exec();
+    if (result.deletedCount === 0) {
+      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`);
+    }
   }
 
   private assignDayOfWeek(todoDto: CreateTodoDto) {
