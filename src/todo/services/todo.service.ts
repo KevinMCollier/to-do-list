@@ -3,11 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from '../dto/create-todo.dto';
 import { Todo } from '../models/todo.model';
+import { User } from '../../user/models/user.model';
 import { format, isSameDay, isWeekend } from 'date-fns';
 
 @Injectable()
 export class TodoService {
-  constructor(@InjectModel('Todo') private readonly todoModel: Model<Todo>) {}
+  constructor(
+  @InjectModel('Todo') private readonly todoModel: Model<Todo>,
+  @InjectModel('User') private readonly userModel: Model<User> // Injecting the User model
+  ) {}
 
   async create(createTodoDto: CreateTodoDto): Promise<Todo> {
     if (createTodoDto.repeat === 'Weekly') {
@@ -82,6 +86,11 @@ export class TodoService {
   }
 
   async findAllByUser(userName: string): Promise<Todo[]> {
-    return this.todoModel.find({ 'user.name': userName }).exec();
+    const user = await this.userModel.findOne({ name: userName });
+    if (!user) {
+      throw new NotFoundException(`User with name ${userName} not found.`);
+    }
+
+    return this.todoModel.find({ user: user._id }).exec();
   }
 }

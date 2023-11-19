@@ -32,12 +32,22 @@ async function seed() {
         // Seed user
         const kevin: CreateUserDto = { name: 'Kevin', email: 'kevin@example.com', productivityLevel: 'Motivated' };
         const kevinUser = await userService.create(kevin);
+        console.log(`Seeded user Kevin with ID: ${kevinUser.id}`);
 
         // Seed todos
         const seedTodos: CreateTodoDto[] = [
           { title: 'Decorate Christmas Tree', repeat: 'Never', date: new Date('2023-12-24'), user: kevinUser.id },
           { title: 'Clean kitchen', repeat: 'Daily - Weekends', date: new Date('2023-12-01'), user: kevinUser.id },
-          // ... other todos with dates and user reference
+          { title: 'Buy Christmas gifts', repeat: 'Never', date: new Date('2023-12-20'), user: kevinUser.id },
+          { title: 'Wrap Christmas presents', repeat: 'Never', date: new Date('2023-12-22'), user: kevinUser.id },
+          { title: 'Plan Christmas dinner', repeat: 'Never', date: new Date('2023-12-23'), user: kevinUser.id },
+          { title: 'Bake Christmas cookies', repeat: 'Daily', date: new Date('2023-12-15'), user: kevinUser.id },
+          { title: 'Prepare Christmas cards', repeat: 'Never', date: new Date('2023-12-10'), user: kevinUser.id },
+          { title: 'Visit a Christmas market', repeat: 'Never', date: new Date('2023-12-05'), user: kevinUser.id },
+          { title: 'Organize Christmas party', repeat: 'Never', date: new Date('2023-12-18'), user: kevinUser.id },
+          { title: 'Attend Christmas service', repeat: 'Never', date: new Date('2023-12-25'), user: kevinUser.id },
+          { title: 'Create a Christmas playlist', repeat: 'Never', date: new Date('2023-12-07'), user: kevinUser.id },
+          { title: 'Go Christmas shopping', repeat: 'Daily', date: new Date('2023-12-12'), user: kevinUser.id },
         ];
 
         for (const todoData of seedTodos) {
