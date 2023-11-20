@@ -18,8 +18,8 @@ export class TodoService {
     return this.todoModel.create(createTodoDto);
   }
 
-  async findTodosByDate(date: Date, userName: string): Promise<Todo[]> {
-    const todos = await this.todoModel.find({ 'user.name': userName }).exec();
+  async findTodosByDate(date: Date, userId: string): Promise<Todo[]> {
+    const todos = await this.todoModel.find({ user: userId }).exec();
     const filteredTodos = todos.filter(todo => {
       if (todo.repeat === 'Never' && isSameDay(todo.date, date)) {
         return true;
@@ -68,6 +68,10 @@ export class TodoService {
     }
   }
 
+  async findAllByUser(userId: string): Promise<Todo[]> {
+    return this.todoModel.find({ user: userId }).exec();
+  }
+
   private assignDayOfWeek(todoDto: CreateTodoDto) {
     const formattedDay = format(todoDto.date, 'EEEE');
     const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -81,7 +85,4 @@ export class TodoService {
     }
   }
 
-  async findAllByUser(userName: string): Promise<Todo[]> {
-    return this.todoModel.find({ 'user.name': userName }).exec();
-  }
 }
