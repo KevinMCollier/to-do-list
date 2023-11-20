@@ -18,24 +18,24 @@ export class TodoController {
   }
 
   @Get('byDate')
-  findTodosByDate(@Query('date') dateString: string) {
+  findTodosByDate(@Query('date') dateString: string, @Query('user') userName: string) {
     const date = parseISO(dateString);
-    return this.todoService.findTodosByDate(date);
+    return this.todoService.findTodosByDate(date, userName);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoService.findOne(id);
+  findOne(@Param('id') id: string, @Query('user') userName: string) {
+    return this.todoService.findOne(id, userName);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: CreateTodoDto) {
-    return this.todoService.update(id, updateTodoDto);
+  update(@Param('id') id: string, @Body() updateTodoDto: CreateTodoDto, @Body('user') userName: string) {
+    return this.todoService.update(id, updateTodoDto, userName);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(id);
+  remove(@Param('id') id: string, @Query('user') userName: string) {
+    return this.todoService.remove(id, userName);
   }
 
   @Get('user/:userName')
