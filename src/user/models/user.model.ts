@@ -9,7 +9,7 @@ export const UserSchema = new mongoose.Schema({
     required: true,
     enum: ['Lazy', 'Normal', 'Motivated']
   },
-});
+}, { collection: 'users' });
 
 export interface User extends mongoose.Document {
   id: string;
