@@ -6,7 +6,7 @@ import { User, UserModel } from '../models/user.model';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserModel.name) private userModel: Model<User>) {}
+  constructor(@InjectModel('User') private userModel: Model<User>) {} // Ensure 'User' matches the name used in the module
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const newUser = new this.userModel(createUserDto);

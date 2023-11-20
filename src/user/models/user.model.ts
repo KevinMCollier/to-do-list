@@ -12,7 +12,7 @@ export const UserSchema = new mongoose.Schema({
 });
 
 export interface User extends mongoose.Document {
-  id: string;
+  // id: string;
   name: string;
   email: string;
   createdAt: Date;
