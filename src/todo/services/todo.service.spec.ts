@@ -14,7 +14,7 @@ describe('TodoService', () => {
     title: 'Test Todo',
     repeat: 'Never',
     date: new Date('2023-01-01'),
-    user: new mongoose.Types.ObjectId().toString(),
+    user: new mongoose.Types.ObjectId(),
     save: jest.fn().mockResolvedValue(this),
   };
 
@@ -50,11 +50,12 @@ describe('TodoService', () => {
   });
 
   it('should create a todo with "Never" repeat status', async () => {
+    const userId = new mongoose.Types.ObjectId();
     const mockCreateTodoDto: CreateTodoDto = {
       title: 'Test Todo',
       repeat: 'Never',
       date: new Date(),
-      user: new mongoose.Types.ObjectId().toString(),
+      user: userId.toString(), // Make sure this matches the expected format in your service
     };
 
     jest.spyOn(model, 'create').mockResolvedValueOnce(mockTodo);
@@ -66,16 +67,19 @@ describe('TodoService', () => {
 
   it('should return Todo with "Never" repeat status if current date matches Todo date', async () => {
     const currentDate = new Date('2023-01-01');
+    const userId = mockTodo.user.toString();
 
-    const result = await service.findTodosByDate(currentDate);
+    const result = await service.findTodosByDate(currentDate, userId);
     expect(result).toContainEqual(mockTodo);
     expect(result.length).toBe(1);
   });
 
   it('should not return Todo with "Never" repeat status if current date does not match Todo date', async () => {
-    const currentDate = new Date('2023-01-02'); // different date
+    const currentDate = new Date('2023-01-02'); // Different date
+    const userId = mockTodo.user.toString();
 
-    const result = await service.findTodosByDate(currentDate);
+    const result = await service.findTodosByDate(currentDate, userId);
     expect(result).toEqual([]);
   });
+
 });
