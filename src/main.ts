@@ -11,5 +11,19 @@ async function bootstrap() {
   //   allowedHeaders: 'Content-Type, Accept',
   // });
   await app.listen(3000);
+  // Log the routes
+  const server = app.getHttpServer();
+  const router = server._events.request._router;
+
+  console.log('Registered Routes:');
+  router.stack.forEach((layer) => {
+    if (layer.route) {
+      const { path, stack } = layer.route;
+      const methods = stack
+        .map((layer) => layer.method.toUpperCase())
+        .filter((method) => method); // Filter out undefined methods
+      console.log(`${methods.join(', ')} ${path}`);
+    }
+  });
 }
 bootstrap();
