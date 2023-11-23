@@ -61,12 +61,20 @@ export class TodoService {
     return updatedTodo;
   }
 
-  async remove(id: string, userName: string): Promise<void> {
-    const result = await this.todoModel.deleteOne({ _id: id, 'user.name': userName }).exec();
+  // async remove(id: string, userName: string): Promise<void> {
+  //   const result = await this.todoModel.deleteOne({ _id: id, 'user.name': userName }).exec();
+  //   if (result.deletedCount === 0) {
+  //     throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`);
+  //   }
+  // }
+
+  async remove(id: string, userId: string): Promise<void> {
+    const result = await this.todoModel.deleteOne({ _id: id, user: userId }).exec();
     if (result.deletedCount === 0) {
-      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`);
+      throw new NotFoundException(`Todo with ID ${id} not found for user ${userId}.`);
     }
   }
+
 
   async findAllByUser(userId: string): Promise<Todo[]> {
     return this.todoModel.find({ user: userId }).exec();
