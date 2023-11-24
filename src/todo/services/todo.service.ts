@@ -13,8 +13,6 @@ export class TodoService {
     if (createTodoDto.repeat === 'Weekly') {
       this.assignDayOfWeek(createTodoDto);
     }
-    // const todo = new this.todoModel(createTodoDto);
-    // return todo.save();
     return this.todoModel.create(createTodoDto);
   }
 
@@ -61,20 +59,12 @@ export class TodoService {
     return updatedTodo;
   }
 
-  // async remove(id: string, userName: string): Promise<void> {
-  //   const result = await this.todoModel.deleteOne({ _id: id, 'user.name': userName }).exec();
-  //   if (result.deletedCount === 0) {
-  //     throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`);
-  //   }
-  // }
-
   async remove(id: string, userId: string): Promise<void> {
     const result = await this.todoModel.deleteOne({ _id: id, user: userId }).exec();
     if (result.deletedCount === 0) {
       throw new NotFoundException(`Todo with ID ${id} not found for user ${userId}.`);
     }
   }
-
 
   async findAllByUser(userId: string): Promise<Todo[]> {
     return this.todoModel.find({ user: userId }).exec();
@@ -87,8 +77,6 @@ export class TodoService {
     if (validDays.includes(formattedDay)) {
       todoDto.dayOfWeek = formattedDay as 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
     } else {
-      // Handle the error if the day is not valid
-      // This could be throwing an exception or handling it another way depending on your application's requirements
       throw new BadRequestException('Invalid day of the week.');
     }
   }
