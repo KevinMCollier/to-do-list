@@ -1,5 +1,3 @@
-// src/todo/dto/create-todo.dto.ts
-
 import { IsNotEmpty, IsString, IsBoolean, IsDate, IsOptional, IsEnum, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -7,9 +5,6 @@ export class CreateTodoDto {
   @IsNotEmpty()
   @IsString()
   title: string;
-
-  // @IsString()
-  // description?: string;
 
   @IsNotEmpty()
   @Type(() => Date)
