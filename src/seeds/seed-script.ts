@@ -3,15 +3,14 @@ dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { TodoService } from '../todo/services/todo.service';
-// import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import { Todo } from '../todo/models/todo.model';  // Adjust the path to your Todo schema
-import { TodoModel } from '../todo/models/todo.model';  // Adjust the path to your Todo schema
+import { Todo } from '../todo/models/todo.model';
+import { TodoModel } from '../todo/models/todo.model';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { CreateTodoDto } from '../todo/dto/create-todo.dto'; // Adjust the path to your CreateTodoDto
+import { CreateTodoDto } from '../todo/dto/create-todo.dto';
 import * as readline from 'readline';
-import { UserService } from '../user/services/user.service'; // Adjust the path to your UserService
+import { UserService } from '../user/services/user.service';
 
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -47,7 +46,6 @@ async function seed() {
           { title: 'Attend Christmas service', repeat: 'Never', date: new Date('2023-12-25'), user: kevinUser.id },
           { title: 'Create a Christmas playlist', repeat: 'Never', date: new Date('2023-12-07'), user: kevinUser.id },
           { title: 'Go Christmas shopping', repeat: 'Daily', date: new Date('2023-12-12'), user: kevinUser.id },
-          // ... other todos with dates and user reference
         ];
 
         for (const todoData of seedTodos) {

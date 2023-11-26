@@ -39,10 +39,9 @@ describe('TodoService', () => {
     service = module.get<TodoService>(TodoService);
     model = module.get(getModelToken('Todo'));
 
-    // Mock the behavior of exec for different test cases
     mockModel.find().exec
-      .mockResolvedValueOnce([mockTodo]) // Mock return value for the first call
-      .mockResolvedValueOnce([]); // Mock return value for the second call
+      .mockResolvedValueOnce([mockTodo])
+      .mockResolvedValueOnce([]);
   });
 
   it('should be defined', () => {
@@ -55,7 +54,7 @@ describe('TodoService', () => {
       title: 'Test Todo',
       repeat: 'Never',
       date: new Date(),
-      user: userId.toString(), // Make sure this matches the expected format in your service
+      user: userId.toString(),
     };
 
     jest.spyOn(model, 'create').mockResolvedValueOnce(mockTodo);
@@ -75,7 +74,7 @@ describe('TodoService', () => {
   });
 
   it('should not return Todo with "Never" repeat status if current date does not match Todo date', async () => {
-    const currentDate = new Date('2023-01-02'); // Different date
+    const currentDate = new Date('2023-01-02');
     const userId = mockTodo.user.toString();
 
     const result = await service.findTodosByDate(currentDate, userId);
