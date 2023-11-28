@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from '../dto/create-todo.dto';
 import { Todo } from '../models/todo.model';
-import { format, isSameDay, isWeekend, isToday, isBefore, isEqual } from 'date-fns';
+import { format, isSameDay, isWeekend, isToday, isBefore, isEqual, parseISO } from 'date-fns';
 
 @Injectable()
 export class TodoService {
@@ -75,7 +75,14 @@ export class TodoService {
   }
 
   private assignDayOfWeek(todoDto: CreateTodoDto) {
-    const formattedDay = format(todoDto.date, 'EEEE');
+    let parsedDate: Date;
+    if (!(todoDto.date instanceof Date)) {
+      parsedDate = parseISO(todoDto.date); // Parse only if it's a string
+    } else {
+      parsedDate = todoDto.date; // Use the Date object directly
+    }
+
+    const formattedDay = format(parsedDate, 'EEEE');
     const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     if (validDays.includes(formattedDay)) {
@@ -84,4 +91,5 @@ export class TodoService {
       throw new BadRequestException('Invalid day of the week.');
     }
   }
+
 }
