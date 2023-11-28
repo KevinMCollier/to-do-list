@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from '../dto/create-todo.dto';
 import { Todo } from '../models/todo.model';
-import { format, isSameDay, isWeekend } from 'date-fns';
+import { format, isSameDay, isWeekend, isToday, isBefore, isEqual } from 'date-fns';
 
 @Injectable()
 export class TodoService {
@@ -19,9 +19,11 @@ export class TodoService {
   async findTodosByDate(date: Date, userId: string): Promise<Todo[]> {
     const todos = await this.todoModel.find({ user: userId }).exec();
     const filteredTodos = todos.filter(todo => {
+      const isTodoDateValid = isToday(todo.date) || isBefore(todo.date, date) || isEqual(todo.date, date);
+
       if (todo.repeat === 'Never' && isSameDay(todo.date, date)) {
         return true;
-      } else if (todo.date <= date) {
+      } else if (isTodoDateValid) {
         if (todo.repeat === 'Daily') {
           return true;
         } else if (todo.repeat === 'Daily - Weekdays' && !isWeekend(date)) {
@@ -38,7 +40,6 @@ export class TodoService {
     return filteredTodos;
   }
 
-
   async findAll(): Promise<Todo[]> {
     return this.todoModel.find().exec();
   }
@@ -46,7 +47,7 @@ export class TodoService {
   async findOne(id: string, userName: string): Promise<Todo> {
     const todo = await this.todoModel.findOne({ _id: id, 'user.name': userName }).exec();
     if (!todo) {
-      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`)
+      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`);
     }
     return todo;
   }
@@ -57,7 +58,7 @@ export class TodoService {
     }
     const updatedTodo = await this.todoModel.findOneAndUpdate({ _id: id, 'user.name': userName }, updateTodoDto, { new: true }).exec();
     if (!updatedTodo) {
-      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`)
+      throw new NotFoundException(`Todo with ID ${id} not found for user ${userName}.`);
     }
     return updatedTodo;
   }
@@ -83,5 +84,4 @@ export class TodoService {
       throw new BadRequestException('Invalid day of the week.');
     }
   }
-
 }
